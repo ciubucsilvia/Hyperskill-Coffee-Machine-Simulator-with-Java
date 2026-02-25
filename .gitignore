@@ -49,3 +49,5 @@ bin/
 **/src/main/**/stage4/
 **/src/main/**/stage5/
 **/src/main/**/stage6/
+
+**/src/test/**/machine/

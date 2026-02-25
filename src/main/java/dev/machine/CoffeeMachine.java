@@ -82,6 +82,10 @@ public class CoffeeMachine {
         boolean running = true;
 
         while (running) {
+            if(machine.coffeeMadeSinceCleaning >= CLEANING_THRESHOLD) {
+                System.out.println("I need cleaning!");
+            }
+
             System.out.println("Write action (buy, fill, take, clean, remaining, exit):");
 
             try {
@@ -89,7 +93,11 @@ public class CoffeeMachine {
                 System.out.println();
 
                 switch (Action.valueOf(action.toUpperCase())) {
-                    case Action.BUY -> {
+                    case BUY -> {
+                        if(machine.coffeeMadeSinceCleaning >= CLEANING_THRESHOLD) {
+                            System.out.println("I need cleaning!");
+                            break;
+                        }
                         System.out.println("What do you want to buy? 1 - espresso, 2 - latte, " +
                                 "3 - cappuccino, back - to main menu:");
                         String choice = scanner.nextLine().trim();
@@ -98,7 +106,7 @@ public class CoffeeMachine {
                         }
                         System.out.println();
                     }
-                    case Action.FILL -> {
+                    case FILL -> {
                         int newWater = readInput("Write how many ml of water you want to add:");
                         int newMilk = readInput("Write how many ml of milk you want to add:");
                         int newBeans = readInput("Write how many grams of coffee beans you want to add:");
@@ -106,19 +114,19 @@ public class CoffeeMachine {
                         machine.fill(newWater, newMilk, newBeans, newCups);
                         System.out.println();
                     }
-                    case Action.TAKE -> {
+                    case TAKE -> {
                         System.out.println("I gave you " + machine.take());
                         System.out.println();
                     }
-                    case Action.REMAINING -> {
+                    case REMAINING -> {
                         System.out.println(machine.getStatus());
                         System.out.println();
                     }
-                    case Action.CLEAN -> {
+                    case CLEAN -> {
                         machine.clean();
                         System.out.println("I have been cleaned!");
                     }
-                    case Action.EXIT -> running = false;
+                    case EXIT -> running = false;
                 }
             } catch (Exception e) {
 
@@ -152,10 +160,10 @@ public class CoffeeMachine {
             return "I need cleaning!";
         }
 
-        CoffeeType coffee = switch(type) {
-            case 1 -> CoffeeType.ESPRESSO;
+        CoffeeMachine.CoffeeType coffee = switch(type) {
+            case 1 -> CoffeeMachine.CoffeeType.ESPRESSO;
             case 2 -> CoffeeType.LATTE;
-            case 3 -> CoffeeType.CAPPUCCINO;
+            case 3 -> CoffeeMachine.CoffeeType.CAPPUCCINO;
             default -> null;
         };
 
